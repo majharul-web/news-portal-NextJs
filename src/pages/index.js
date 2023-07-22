@@ -2,9 +2,11 @@ import Head from "next/head";
 import RootLayout from "@/components/Layouts/RootLayout";
 import Banner from "@/components/UI/Banner";
 import AllNews from "@/components/UI/AllNews";
+import { useGetNewsQuery } from "@/redux/api/api";
 
-const HomePage = ({ allNews }) => {
-  console.log("allNews", allNews);
+const HomePage = () => {
+  const { data, isLoading } = useGetNewsQuery(undefined, { refetchOnMountOrArgChange: true });
+
   return (
     <>
       <Head>
@@ -14,7 +16,7 @@ const HomePage = ({ allNews }) => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Banner />
-      <AllNews allNews={allNews} />
+      {isLoading ? <h1 style={{ textAlign: "center" }}>Loading...</h1> : <AllNews allNews={data} />}
     </>
   );
 };
@@ -22,14 +24,4 @@ export default HomePage;
 
 HomePage.getLayout = function getLayout(page) {
   return <RootLayout>{page}</RootLayout>;
-};
-
-export const getServerSideProps = async () => {
-  const res = await fetch("http://localhost:5000/news");
-  const data = await res.json();
-  return {
-    props: {
-      allNews: data,
-    },
-  };
 };

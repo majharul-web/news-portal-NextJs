@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const AllNews = ({ allNews }) => {
   const { Meta } = Card;
-  console.log("AllNews", allNews);
+  // console.log("AllNews", allNews);
   return (
     <>
       <h3
